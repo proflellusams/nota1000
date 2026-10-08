@@ -1,1126 +1,255 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full bg-slate-900">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Cidade das Palavras — Jornada Nota 1000 ENEM</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 100%);
-      color: #f8fafc;
-    }
-    .glow-gold { box-shadow: 0 0 20px rgba(251, 191, 36, 0.35); }
-    .glow-indigo { box-shadow: 0 0 20px rgba(99, 102, 241, 0.35); }
-    .glow-cyan { box-shadow: 0 0 20px rgba(6, 182, 212, 0.35); }
-    .pop-anim { animation: pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    @keyframes pop {
-      from { opacity: 0; transform: scale(0.95) translateY(10px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desafio da Redação — Treino ENEM</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;color:#172033}
+button,input{font:inherit}
+.container{max-width:1050px;margin:auto;padding:20px}
+header{background:linear-gradient(135deg,#0f766e,#155e75);color:white;border-radius:24px;padding:28px;margin-bottom:18px;box-shadow:0 10px 30px #0002}
+header h1{margin:0 0 8px;font-size:clamp(25px,4vw,40px)}
+header p{margin:0;opacity:.9}
+.card{background:white;border:1px solid #e3e8ef;border-radius:22px;padding:24px;box-shadow:0 8px 25px #20304012;margin-bottom:18px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.badge{background:#e6fffb;color:#0f766e;padding:7px 11px;border-radius:999px;font-weight:700;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.stat{background:#f8fafc;border-radius:15px;padding:12px;text-align:center}
+.stat strong{display:block;font-size:22px}
+.progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:12px 0 20px}
+.progress span{display:block;height:100%;background:#14b8a6;transition:.3s}
+h2{margin-top:0}
+.option,.word,.match-btn{width:100%;text-align:left;border:2px solid #e5e7eb;background:white;border-radius:15px;padding:14px;margin:8px 0;cursor:pointer;transition:.15s}
+.option:hover,.word:hover,.match-btn:hover{border-color:#14b8a6;transform:translateY(-1px)}
+.option.correct,.word.correct,.match-btn.correct{border-color:#16a34a;background:#f0fdf4}
+.option.wrong,.word.wrong,.match-btn.wrong{border-color:#dc2626;background:#fef2f2}
+.feedback{margin-top:14px;padding:15px;border-radius:15px}
+.good{background:#ecfdf5;border:1px solid #86efac}
+.bad{background:#fff1f2;border:1px solid #fda4af}
+.next,.primary{border:0;background:#0f766e;color:white;font-weight:800;padding:13px 18px;border-radius:14px;cursor:pointer;margin-top:14px}
+.next:hover,.primary:hover{background:#115e59}
+.secondary{border:0;background:#e2e8f0;color:#172033;font-weight:700;padding:13px 18px;border-radius:14px;cursor:pointer;margin-top:14px}
+.homegrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.small{font-size:14px;color:#64748b}
+.example{background:#f8fafc;border-left:5px solid #14b8a6;padding:14px;border-radius:10px;margin:12px 0}
+.sequence{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.sequence button{border:2px solid #cbd5e1;background:white;border-radius:12px;padding:12px;cursor:pointer}
+.sequence button.selected{border-color:#0f766e;background:#ccfbf1}
+.result{text-align:center}
+.bigscore{font-size:52px;font-weight:900;color:#0f766e}
+@media(max-width:700px){
+ .container{padding:12px}
+ .homegrid,.choice-row,.stats{grid-template-columns:1fr}
+ header{padding:22px}
+ .card{padding:18px}
+}
+</style>
 </head>
-<body class="min-h-full flex flex-col justify-between text-slate-100">
-
-  <header class="border-b border-indigo-900/60 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('hub')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center text-xl font-extrabold shadow-lg">
-          🏰
-        </div>
-        <div>
-          <h1 class="font-extrabold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-amber-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">
-            A Cidade das Palavras
-          </h1>
-          <p class="text-xs text-slate-400">Jornada Interativa para Redação ENEM</p>
-        </div>
-      </div>
-
-      <!-- User Stats Badge Bar -->
-      <div id="statsBar" class="flex items-center gap-2 sm:gap-4 bg-slate-800/80 border border-slate-700/60 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm">
-        <span title="Nível de Aprendizado" class="flex items-center gap-1 font-bold text-amber-400">
-          ⚡ Nível <span id="statLevel">1</span>
-        </span>
-        <span class="text-slate-600">|</span>
-        <span title="Pontos de Experiência" class="flex items-center gap-1 font-semibold text-cyan-400">
-          ✨ <span id="statXP">0</span> XP
-        </span>
-        <span class="text-slate-600">|</span>
-        <span title="Vidas de Herói" class="flex items-center gap-1 font-semibold text-red-400">
-          ❤️ <span id="statLives">3</span>
-        </span>
-      </div>
-
-      <!-- Navigation Tabs -->
-      <nav class="flex items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700/60 text-xs sm:text-sm font-semibold">
-        <button id="tabBtn-hub" onclick="switchTab('hub')" class="px-3 py-1.5 rounded-lg transition-all bg-indigo-600 text-white shadow">
-          🗺️ Missões
-        </button>
-        <button id="tabBtn-aulas" onclick="switchTab('aulas')" class="px-3 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700/50">
-          📚 Aulas
-        </button>
-        <button id="tabBtn-perfil" onclick="switchTab('perfil')" class="px-3 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700/50">
-          🏆 Conquistas
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <main class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full">
-    
-    <!-- TAB 1: HUB / JOGOS -->
-    <section id="tab-hub" class="pop-anim space-y-6">
-      <!-- Story Banner -->
-      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-slate-950 border border-indigo-500/30 p-6 sm:p-8 shadow-2xl">
-        <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="relative z-10 max-w-2xl">
-          <span class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 inline-block mb-3">
-            📜 A Lenda do Escriba da Nota 1000
-          </span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2 leading-tight">
-            Salve a Cidade das Palavras da Névoa do Erro!
-          </h2>
-          <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
-            A misteriosa <span class="text-indigo-300 font-semibold">Névoa da Desinformação</span> cobriu os reinos da gramática, argumentação e coesão. Derrote os monstros do senso comum, combine elementos alquímicos na proposta de intervenção e reconquiste a lendária <span class="text-amber-400 font-bold">Nota 1000</span>!
-          </p>
-          <div class="flex flex-wrap items-center gap-3">
-            <button onclick="switchTab('aulas')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl text-sm transition shadow-lg hover:shadow-indigo-500/20">
-              📖 Estudar Aulas Primeiro
-            </button>
-            <a href="#games-grid" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-semibold px-4 py-2.5 rounded-xl text-sm transition">
-              ⚔️ Ir para os Jogos
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Games Grid Header -->
-      <div class="flex items-center justify-between" id="games-grid">
-        <div>
-          <h3 class="text-xl font-extrabold text-white">Salas de Treinamento & RPG</h3>
-          <p class="text-xs text-slate-400">Escolha uma missão interativa para praticar cada competência do ENEM</p>
-        </div>
-      </div>
-
-      <!-- Games Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        
-        <!-- Game Card 1 -->
-        <div class="bg-slate-800/80 border border-slate-700 hover:border-amber-500/50 rounded-2xl p-5 transition-all hover:-translate-y-1 hover:shadow-xl group flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 bg-amber-500/10 border border-amber-500/20 rounded-xl group-hover:scale-110 transition">🛡️</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300">C2 & C3</span>
-            </div>
-            <h4 class="font-extrabold text-lg text-white mb-1 group-hover:text-amber-300 transition">O Construtor de Parágrafos</h4>
-            <p class="text-xs text-slate-300 leading-relaxed mb-4">
-              RPG de escolhas! Monte uma redação nota 1000 bloco a bloco derrotando o <i>Monstro do Senso Comum</i> e o <i>Vilão do Tangenciamento</i>.
-            </p>
-          </div>
-          <button onclick="startGame(1)" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold py-2.5 rounded-xl text-sm transition shadow-md">
-            🎮 Iniciar Missão (RPG)
-          </button>
-        </div>
-
-        <!-- Game Card 2 -->
-        <div class="bg-slate-800/80 border border-slate-700 hover:border-cyan-500/50 rounded-2xl p-5 transition-all hover:-translate-y-1 hover:shadow-xl group flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 bg-cyan-500/10 border border-cyan-500/20 rounded-xl group-hover:scale-110 transition">🔍</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300">C1 & C4</span>
-            </div>
-            <h4 class="font-extrabold text-lg text-white mb-1 group-hover:text-cyan-300 transition">Caça-Erros de Ficção</h4>
-            <p class="text-xs text-slate-300 leading-relaxed mb-4">
-              Torne-se um Detetive das Letras! Analise crônicas futuristas e artigos com falhas de concordância, crase e coesão.
-            </p>
-          </div>
-          <button onclick="startGame(2)" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold py-2.5 rounded-xl text-sm transition shadow-md">
-            🕵️ Investigar Casos
-          </button>
-        </div>
-
-        <!-- Game Card 3 -->
-        <div class="bg-slate-800/80 border border-slate-700 hover:border-indigo-500/50 rounded-2xl p-5 transition-all hover:-translate-y-1 hover:shadow-xl group flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl group-hover:scale-110 transition">⚔️</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300">C2 · Repertório</span>
-            </div>
-            <h4 class="font-extrabold text-lg text-white mb-1 group-hover:text-indigo-300 transition">Duelo de Repertórios</h4>
-            <p class="text-xs text-slate-300 leading-relaxed mb-4">
-              Conecte filósofos, livros (1984, Utopia), leis e dados do IBGE aos temas sociais corretos para ativar ataques socioculturais.
-            </p>
-          </div>
-          <button onclick="startGame(3)" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-extrabold py-2.5 rounded-xl text-sm transition shadow-md">
-            ⚔️ Entrar na Batalha
-          </button>
-        </div>
-
-        <!-- Game Card 4 -->
-        <div class="bg-slate-800/80 border border-slate-700 hover:border-emerald-500/50 rounded-2xl p-5 transition-all hover:-translate-y-1 hover:shadow-xl group flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl group-hover:scale-110 transition">🧩</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300">C4 · Coesão</span>
-            </div>
-            <h4 class="font-extrabold text-lg text-white mb-1 group-hover:text-emerald-300 transition">Laboratório de Conectivos</h4>
-            <p class="text-xs text-slate-300 leading-relaxed mb-4">
-              Puzzle de conexões! Escolha os conectivos lógicos certos (Adição, Oposição, Causa, Conclusão) para religar a energia da cidade.
-            </p>
-          </div>
-          <button onclick="startGame(4)" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold py-2.5 rounded-xl text-sm transition shadow-md">
-            ⚡ Resolver Puzzles
-          </button>
-        </div>
-
-        <!-- Game Card 5 -->
-        <div class="bg-slate-800/80 border border-slate-700 hover:border-pink-500/50 rounded-2xl p-5 transition-all hover:-translate-y-1 hover:shadow-xl group flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 bg-pink-500/10 border border-pink-500/20 rounded-xl group-hover:scale-110 transition">🧪</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-pink-500/20 text-pink-300">C5 · Proposta</span>
-            </div>
-            <h4 class="font-extrabold text-lg text-white mb-1 group-hover:text-pink-300 transition">Alquimia da C5</h4>
-            <p class="text-xs text-slate-300 leading-relaxed mb-4">
-              Misture os 5 ingredientes essenciais da proposta de intervenção perfeita: Agente, Ação, Meio, Finalidade e Detalhamento!
-            </p>
-          </div>
-          <button onclick="startGame(5)" class="w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-extrabold py-2.5 rounded-xl text-sm transition shadow-md">
-            🔮 Criar Poção C5
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="game-modal" class="hidden pop-anim">
-      <div id="gameContainer" class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 sm:p-7 shadow-2xl relative">
-        <!-- Game Content injected dynamically via JS -->
-      </div>
-    </section>
-
-    <section id="tab-aulas" class="hidden pop-anim space-y-6">
-      <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6">
-        <h2 class="text-2xl font-extrabold text-amber-300 mb-1">📖 Academia de Redação Nota 1000</h2>
-        <p class="text-xs sm:text-sm text-slate-300 mb-6">
-          Aprenda com linguagem simples, exemplos práticos e resumos diretos baseados na Cartilha do Participante do INEP.
-        </p>
-
-        <!-- Accordion/Tabs for Lessons -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 mb-6" id="lessonTabsNav">
-          <!-- Dynamically Generated Lesson Navigation Buttons -->
-        </div>
-
-        <div id="lessonContent" class="bg-slate-900/80 border border-slate-700/80 rounded-xl p-5 sm:p-6 text-sm leading-relaxed text-slate-200">
-          <!-- Lesson Body Dynamic Content -->
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-perfil" class="hidden pop-anim space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- User Stats Card -->
-        <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 text-center flex flex-col items-center justify-center">
-          <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-400 to-indigo-600 flex items-center justify-center text-4xl shadow-lg mb-3">
-            🧙‍♂️
-          </div>
-          <h3 id="profileName" class="font-extrabold text-xl text-white">Mestre das Letras</h3>
-          <p id="profileTitle" class="text-xs text-amber-400 font-semibold mb-4">Aprendiz da Cidade das Palavras</p>
-          
-          <div class="w-full bg-slate-900 rounded-xl p-3 border border-slate-700/50 space-y-2 text-xs">
-            <div class="flex justify-between text-slate-300">
-              <span>Nível Atual:</span>
-              <span id="pLevel" class="font-bold text-amber-400">1</span>
-            </div>
-            <div class="flex justify-between text-slate-300">
-              <span>XP Total:</span>
-              <span id="pXP" class="font-bold text-cyan-400">0 XP</span>
-            </div>
-            <div class="flex justify-between text-slate-300">
-              <span>Jogos Concluídos:</span>
-              <span id="pGames" class="font-bold text-emerald-400">0</span>
-            </div>
-          </div>
-
-          <button onclick="resetUserData()" class="mt-4 text-xs text-slate-400 hover:text-red-400 underline">
-            Resetar Progresso
-          </button>
-        </div>
-
-        <!-- Badges Card -->
-        <div class="md:col-span-2 bg-slate-800/80 border border-slate-700 rounded-2xl p-6">
-          <h3 class="font-extrabold text-lg text-white mb-1 flex items-center gap-2">
-            🎖️ Medalhas & Insígnias Conquistadas
-          </h3>
-          <p class="text-xs text-slate-400 mb-4">Desbloqueie conquistas completando os desafios e acertando sequências.</p>
-          <div id="badgesGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <!-- Badges Injected Here -->
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Ranking Table -->
-      <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6">
-        <h3 class="font-extrabold text-lg text-white mb-3 flex items-center gap-2">
-          🏆 Hall dos Escribas (Ranking Local)
-        </h3>
-        <div id="rankingList" class="overflow-x-auto">
-          <!-- Ranking List Table -->
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="border-t border-slate-800 bg-slate-950/90 py-4 text-center text-xs text-slate-500">
-    <div class="max-w-6xl mx-auto px-4">
-      <p>A Cidade das Palavras · Projeto Pedagógico Gamificado de Redação para o ENEM (Matriz do INEP)</p>
-    </div>
-  </footer>
-
-  <script>
-    /* Helper Functions */
-    const $ = s => document.querySelector(s);
-    const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-
-    /* State Management */
-    const STORAGE_KEY = 'cidadePalavras_V2';
-    let userState = {
-      name: 'Escriba Destemido',
-      xp: 0,
-      level: 1,
-      lives: 3,
-      gamesCompleted: 0,
-      badges: ['novato'],
-      ranking: []
-    };
-
-    function loadState() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          userState = { ...userState, ...JSON.parse(saved) };
-        }
-      } catch(e) {}
-      updateUIHeader();
-    }
-
-    function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
-      } catch(e) {}
-      updateUIHeader();
-    }
-
-    function addXP(amount) {
-      userState.xp += amount;
-      const newLevel = Math.floor(userState.xp / 300) + 1;
-      if (newLevel > userState.level) {
-        userState.level = newLevel;
-        showToast(`🎉 PARABÉNS! Você subiu para o Nível ${newLevel}!`);
-      }
-      saveState();
-    }
-
-    function showToast(msg) {
-      const toast = document.createElement('div');
-      toast.className = 'fixed bottom-5 right-5 bg-amber-400 text-slate-950 px-4 py-3 rounded-xl font-extrabold shadow-2xl z-50 pop-anim flex items-center gap-2 text-sm';
-      toast.innerHTML = `<span>⚡</span><span>${msg}</span>`;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3500);
-    }
-
-    function updateUIHeader() {
-      $('#statLevel').innerText = userState.level;
-      $('#statXP').innerText = userState.xp;
-      $('#statLives').innerText = userState.lives;
-      
-      $('#pLevel').innerText = userState.level;
-      $('#pXP').innerText = userState.xp + ' XP';
-      $('#pGames').innerText = userState.gamesCompleted;
-    }
-
-    /* Tabs Navigation */
-    function switchTab(tabId) {
-      ['hub', 'aulas', 'perfil'].forEach(t => {
-        $(`#tab-${t}`).classList.add('hidden');
-        const btn = $(`#tabBtn-${t}`);
-        if (btn) {
-          btn.className = 'px-3 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700/50';
-        }
-      });
-      
-      $('#game-modal').classList.add('hidden');
-      $(`#tab-${tabId}`).classList.remove('hidden');
-      $(`#tabBtn-${tabId}`).className = 'px-3 py-1.5 rounded-lg transition-all bg-indigo-600 text-white shadow font-bold';
-
-      if (tabId === 'aulas') renderLessons();
-      if (tabId === 'perfil') renderProfile();
-    }
-
-    /* -------------------------------------------------- */
-    /* LESSONS / AULAS INTERATIVAS                       */
-    /* -------------------------------------------------- */
-    const LESSONS_DATA = [
-      {
-        id: 'est',
-        title: '🏗️ Estrutura Dissertativa',
-        desc: 'O esqueleto perfeito da Redação ENEM',
-        content: `
-          <h3 class="text-lg font-bold text-amber-300 mb-2">A Fórmula de 4 Parágrafos</h3>
-          <p class="mb-3">A redação do ENEM deve ser um texto <b>dissertativo-argumentativo</b> dividido idealmente em 4 parágrafos estratégicos:</p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
-              <span class="font-bold text-amber-400">1. Introdução (~6 a 8 linhas)</span>
-              <p class="text-xs text-slate-300 mt-1"><b>Contextualização</b> (repertório) + <b>Apresentação do Tema</b> + <b>Tese</b> (duas causas ou problemas principais).</p>
-            </div>
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
-              <span class="font-bold text-cyan-400">2. Desenvolvimento 1 (~7 a 8 linhas)</span>
-              <p class="text-xs text-slate-300 mt-1">Topico frasal (Apresenta Causa 1) + Fundamentação com Repertório Sociocultural + Aprofundamento do argumento.</p>
-            </div>
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
-              <span class="font-bold text-indigo-400">3. Desenvolvimento 2 (~7 a 8 linhas)</span>
-              <p class="text-xs text-slate-300 mt-1">Topico frasal (Apresenta Causa 2) + Explicação lógica da consequência social + Impacto na população.</p>
-            </div>
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
-              <span class="font-bold text-emerald-400">4. Proposta / Conclusão (~7 a 8 linhas)</span>
-              <p class="text-xs text-slate-300 mt-1">Conectivo de conclusão + Proposta completa com os 5 Elementos da C5 + Fechamento poético/cidadão.</p>
-            </div>
-          </div>
-          <div class="bg-indigo-950/60 border-l-4 border-indigo-400 p-3 rounded text-xs text-indigo-200">
-            💡 <b>Dica de Ouro:</b> Nunca faça apenas 2 ou 3 parágrafos grandes. A estrutura de 4 parágrafos deixa seu projeto de texto claro e organizado!
-          </div>
-        `
-      },
-      {
-        id: 'c1',
-        title: '✏️ C1: Norma Culta',
-        desc: 'Gramática, concordância, crase e pontuação',
-        content: `
-          <h3 class="text-lg font-bold text-amber-300 mb-2">Competência 1: Domínio da Norma Padrão</h3>
-          <p class="mb-3">A C1 avalia a precisão gramatical e o vocabulário do seu texto. Pequenos deslizes acontecem, mas erros recorrentes reduzem a nota.</p>
-          <ul class="list-disc pl-5 space-y-2 mb-4 text-xs sm:text-sm">
-            <li><b>Concordância Verbal:</b> "<u>Existem</u> vários desafios" (Correto) vs. "<u>Existe</u> vários desafios" (Erro comum!). O verbo "haver" no sentido de existir é invariável: "<u>Há</u> muitas razões".</li>
-            <li><b>Regra de Crase:</b> Só use crase antes de palavras femininas aceitando artigo: "Respeito <u>à</u> mulher". Nunca use antes de verbos ou pronomes masculinos ("A partir de", "A esse respeito").</li>
-            <li><b>Pontuação Estratégica:</b> Não separe o sujeito do verbo por vírgula. Exemplo errado: "<i>O Estado brasileiro, deve agir.</i>" (A vírgula está errada!).</li>
-          </ul>
-        `
-      },
-      {
-        id: 'c2',
-        title: '🌍 C2: Tema e Repertório',
-        desc: 'Compreensão do tema sem tangenciar',
-        content: `
-          <h3 class="text-lg font-bold text-amber-300 mb-2">Competência 2: Compreensão e Repertório Legitimado</h3>
-          <p class="mb-3">Para garantir nota máxima na C2, você precisa abordar <b>TODAS</b> as palavras-chave da proposta e usar repertório legitimado de forma produtiva.</p>
-          <div class="space-y-2 text-xs sm:text-sm mb-4">
-            <div class="bg-slate-800 p-3 rounded-xl border-l-4 border-amber-400">
-              <b>O que é Tangenciamento?</b> Se o tema é "Invisibilidade do Trabalho de Cuidado", e você fala apenas de "Desemprego", você tangencia e perde muitos pontos.
-            </div>
-            <div class="bg-slate-800 p-3 rounded-xl border-l-4 border-emerald-400">
-              <b>O que é Repertório Legitimado e Produtivo?</b> É trazer dados do IBGE, filósofos (Bauman, Kant), leis (Constituição Federal) ou obras de arte e LIGAR DIRETAMENTE à sua tese.
-            </div>
-          </div>
-        `
-      },
-      {
-        id: 'c3',
-        title: '🧠 C3: Projeto de Texto',
-        desc: 'Argumentação lógica e coerência',
-        content: `
-          <h3 class="text-lg font-bold text-amber-300 mb-2">Competência 3: Projeto de Texto e Defesa de Tese</h3>
-          <p class="mb-3">A C3 quer ver se você planejou seu texto do início ao fim sem ideias soltas ou contradições.</p>
-          <ul class="list-disc pl-5 space-y-2 text-xs sm:text-sm mb-4">
-            <li><b>Projeto de Texto Transparente:</b> Na introdução, cite os 2 problemas (ex: omissão governamental + preconceito cultural). No D1 trate do problema 1; no D2 trate do problema 2.</li>
-            <li><b>Evite o Senso Comum:</b> Frases prontas como "Desde os primórdios da humanidade" ou "Cada um deve fazer sua parte" mostram falta de profundidade crítica.</li>
-          </ul>
-        `
-      },
-      {
-        id: 'c4',
-        title: '🔗 C4: Coesão e Conectivos',
-        desc: 'Uso de conectivos e elos coesivos',
-        content: `
-          <h3 class="text-lg font-bold text-amber-300 mb-2">Competência 4: Mecanismos Inter e Intraparágrafos</h3>
-          <p class="mb-3">Sua redação precisa fluir como uma ponte perfeita sem fios soltos.</p>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs mb-4">
-            <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700">
-              <span class="font-bold text-amber-300">Conectivos Interparágrafos</span>
-              <p class="mt-1 text-slate-300">Inicie D2 com "<i>Em segunda análise,</i>" e Conclusão com "<i>Portanto,</i>" ou "<i>Depreende-se, pois,</i>".</p>
-            </div>
-            <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700">
-              <span class="font-bold text-cyan-300">Conectivos de Oposição</span>
-              <p class="mt-1 text-slate-300">Use "<i>Contudo</i>", "<i>Entretanto</i>", "<i>Todavia</i>" para criar contraste lógico.</p>
-            </div>
-            <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700">
-              <span class="font-bold text-emerald-300">Conectivos de Adição</span>
-              <p class="mt-1 text-slate-300">Use "<i>Ademais</i>", "<i>Além disso</i>", "<i>Outrossim</i>" para somar argumentos.</p>
-            </div>
-          </div>
-        `
-      },
-      {
-        id: 'c5',
-        title: '🎯 C5: Proposta de Intervenção',
-        desc: 'Os 5 elementos obrigatórios da conclusão',
-        content: `
-          <h3 class="text-lg font-bold text-amber-300 mb-2">Competência 5: Os 5 Elementos da Solução</h3>
-          <p class="mb-3">A proposta perfeita de intervenção garante 200 pontos cheios se contiver exatamente os 5 elementos:</p>
-          <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-center text-xs mb-4">
-            <div class="bg-slate-800 p-2 rounded-xl border border-amber-500/40">
-              <b class="text-amber-400 block">1. AGENTE</b> Quem faz? (GOMIFES: Governo, Mídia, Escola...)
-            </div>
-            <div class="bg-slate-800 p-2 rounded-xl border border-cyan-500/40">
-              <b class="text-cyan-400 block">2. AÇÃO</b> O que faz? (Ampliar verbas, criar projetos)
-            </div>
-            <div class="bg-slate-800 p-2 rounded-xl border border-indigo-500/40">
-              <b class="text-indigo-400 block">3. MEIO/MODO</b> Como faz? ("Por meio de...", "Mediante...")
-            </div>
-            <div class="bg-slate-800 p-2 rounded-xl border border-emerald-500/40">
-              <b class="text-emerald-400 block">4. EFEITO</b> Para que faz? ("A fim de promover...", "Com o intuito de...")
-            </div>
-            <div class="bg-slate-800 p-2 rounded-xl border border-pink-500/40">
-              <b class="text-pink-400 block">5. DETALHAMENTO</b> Exemplo/Explicação extra de um dos elementos.
-            </div>
-          </div>
-        `
-      }
-    ];
-
-    let currentLesson = 0;
-
-    function renderLessons() {
-      const nav = $('#lessonTabsNav');
-      nav.innerHTML = LESSONS_DATA.map((l, i) => `
-        <button onclick="selectLesson(${i})" class="p-2.5 rounded-xl border text-xs font-bold transition text-left ${i === currentLesson ? 'bg-indigo-600 border-indigo-400 text-white shadow' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700'}">
-          ${l.title.split(':')[0]}
-        </button>
-      `).join('');
-
-      const active = LESSONS_DATA[currentLesson];
-      $('#lessonContent').innerHTML = `
-        <div class="border-b border-slate-700 pb-3 mb-4">
-          <span class="text-xs text-amber-400 uppercase tracking-widest font-extrabold">Módulo Educativo</span>
-          <h2 class="text-xl font-extrabold text-white">${active.title}</h2>
-          <p class="text-xs text-slate-400">${active.desc}</p>
-        </div>
-        ${active.content}
-        <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center">
-          <button onclick="selectLesson(${Math.max(0, currentLesson - 1)})" ${currentLesson === 0 ? 'disabled class="opacity-40 text-xs px-3 py-2 bg-slate-800 text-slate-500 rounded-lg"' : 'class="text-xs px-3 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold"'}>
-            ⬅️ Aula Anterior
-          </button>
-          <button onclick="selectLesson(${Math.min(LESSONS_DATA.length - 1, currentLesson + 1)})" ${currentLesson === LESSONS_DATA.length - 1 ? 'disabled class="opacity-40 text-xs px-3 py-2 bg-slate-800 text-slate-500 rounded-lg"' : 'class="text-xs px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold"'}>
-            Próxima Aula ➡️
-          </button>
-        </div>
-      `;
-    }
-
-    function selectLesson(idx) {
-      currentLesson = idx;
-      renderLessons();
-    }
-
-    /* -------------------------------------------------- */
-    /* MINI-GAMES / FICTION QUEST LOGIC                  */
-    /* -------------------------------------------------- */
-
-    let activeGame = null;
-    let gameState = {};
-
-    function startGame(gameId) {
-      $('#tab-hub').classList.add('hidden');
-      $('#game-modal').classList.remove('hidden');
-      
-      if (gameId === 1) initGame1();
-      if (gameId === 2) initGame2();
-      if (gameId === 3) initGame3();
-      if (gameId === 4) initGame4();
-      if (gameId === 5) initGame5();
-    }
-
-    function exitGame() {
-      $('#game-modal').classList.add('hidden');
-      $('#tab-hub').classList.remove('hidden');
-      updateUIHeader();
-    }
-
-    /* -------------------------------------------------- */
-    /* GAME 1: O CONSTRUTOR DE PARÁGRAFOS (RPG)          */
-    /* -------------------------------------------------- */
-    function initGame1() {
-      gameState = {
-        step: 0,
-        score: 0,
-        essayParts: [],
-        stepsData: [
-          {
-            stage: 'Etapa 1: A Introdução e Tese',
-            boss: '👾 Vilão do Tangenciamento',
-            desc: 'Escolha o parágrafo introdutório que apresenta o tema com clareza sem fugir do assunto.',
-            options: [
-              {
-                text: 'Historicamente, a divisão sexual do trabalho atribuiu às mulheres os afazeres domésticos não remunerados. No Brasil contemporâneo, essa invisibilidade persiste como grave entrave social, exigindo ação governamental e mudança cultural.',
-                correct: true,
-                feedback: 'Excelente! Você derrotou o Vilão do Tangenciamento! Apresentou contexto histórico, o tema exato e assumiu uma tese clara (C2 e C3).'
-              },
-              {
-                text: 'O desemprego no Brasil atinge milhões de pessoas e a economia está muito fraca nos últimos anos, afetando o comércio local de vários estados.',
-                correct: false,
-                feedback: 'Ops! Você sofreu um golpe do Tangenciamento! O parágrafo fala de desemprego geral, mas esquece o foco principal: o trabalho de cuidado não remunerado das mulheres.'
-              }
-            ]
-          },
-          {
-            stage: 'Etapa 2: Argumento com Repertório',
-            boss: '👹 Monstro do Senso Comum',
-            desc: 'Escolha o parágrafo que usa um repertório sociocultural legitimado e produtivo.',
-            options: [
-              {
-                text: 'Como diz o ditado popular, "mulher nasceu para cuidar da casa", então isso é algo natural da sociedade que não precisa mudar.',
-                correct: false,
-                feedback: 'Cuidado! O Monstro do Senso Comum atacou você! Ditados populares não constituem repertório legitimado e naturalizam o problema.'
-              },
-              {
-                text: 'Segundo dados do IBGE, as mulheres dedicam, em média, quase o dobro de horas semanais que os homens às tarefas domésticas. Esse dado explicita que a sobrecarga feminina limita a inserção delas no mercado profissional.',
-                correct: true,
-                feedback: 'Golpe Crítico! Você usou fonte oficial (IBGE) de forma produtiva para comprovar sua tese (Nota máxima na C2 e C3).'
-              }
-            ]
-          },
-          {
-            stage: 'Etapa 3: Aprofundamento do Argumento',
-            boss: '🐉 Dragão da Desconexão',
-            desc: 'Selecione a continuação com forte relação de causa e consequência.',
-            options: [
-              {
-                text: 'Ademais, a ausência de creches públicas em tempo integral transfere essa responsabilidade exclusivamente às famílias, perpetuando o ciclo de dependência econômica feminina.',
-                correct: true,
-                feedback: 'Perfeito! Relação clara de causa (falta de creches) e consequência (dependência econômica). A C3 agradece!'
-              },
-              {
-                text: 'Além disso, o Brasil tem uma rica diversidade cultural e praias bonitas em todo o litoral nordestino.',
-                correct: false,
-                feedback: 'Ataque falhou! A informação sobre praias é totalmente fora do projeto de texto (Prejuízo grave na C3).'
-              }
-            ]
-          }
-        ]
-      };
-      renderGame1Step();
-    }
-
-    function renderGame1Step() {
-      const g = gameState;
-      const cur = g.stepsData[g.step];
-      const container = $('#gameContainer');
-
-      if (g.step >= g.stepsData.length) {
-        // Finished
-        userState.gamesCompleted++;
-        addXP(250);
-        container.innerHTML = `
-          <div class="text-center py-6 pop-anim">
-            <span class="text-5xl mb-3 block">🏆</span>
-            <h3 class="text-2xl font-extrabold text-amber-300 mb-2">Missão Cumprida, Escriba!</h3>
-            <p class="text-sm text-slate-300 mb-4">Você derrotou os monstros do texto e concluiu a estrutura com sucesso!</p>
-            <div class="bg-slate-900 p-4 rounded-xl text-left border border-slate-700 mb-6 text-xs sm:text-sm space-y-2">
-              <h4 class="font-bold text-amber-400">📄 Seu Rascunho Final Montado:</h4>
-              ${g.essayParts.map(p => `<p class="italic text-slate-300 bg-slate-800/80 p-2.5 rounded border border-slate-700/50">"${esc(p)}"</p>`).join('')}
-            </div>
-            <button onclick="exitGame()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-lg">
-              Voltar ao Quartel-General
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = `
-        <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
-          <div>
-            <span class="text-xs text-amber-400 font-extrabold">${cur.stage}</span>
-            <h3 class="text-lg font-bold text-white">${cur.boss}</h3>
-          </div>
-          <button onclick="exitGame()" class="text-slate-400 hover:text-white text-xs bg-slate-700 px-3 py-1.5 rounded-lg">Sair ✖</button>
-        </div>
-        <p class="text-xs sm:text-sm text-slate-300 mb-4">${cur.desc}</p>
-        <div class="space-y-3 mb-4">
-          ${cur.options.map((opt, idx) => `
-            <button onclick="pickGame1Option(${idx})" class="w-full text-left bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-amber-400/60 p-4 rounded-xl text-xs sm:text-sm text-slate-200 transition">
-              ${esc(opt.text)}
-            </button>
-          `).join('')}
-        </div>
-        <div id="game1Feedback"></div>
-      `;
-    }
-
-    function pickGame1Option(idx) {
-      const cur = gameState.stepsData[gameState.step];
-      const opt = cur.options[idx];
-      const fb = $('#game1Feedback');
-
-      if (opt.correct) {
-        gameState.score += 100;
-        gameState.essayParts.push(opt.text);
-        fb.innerHTML = `
-          <div class="bg-emerald-950/80 border border-emerald-500 p-4 rounded-xl text-xs sm:text-sm text-emerald-200 pop-anim">
-            <b>✅ ACERTO CRÍTICO!</b>
-            <p class="mt-1">${opt.feedback}</p>
-            <button onclick="gameState.step++; renderGame1Step();" class="mt-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg text-xs">
-              Avançar para o Próximo Inimigo ➜
-            </button>
-          </div>
-        `;
-      } else {
-        fb.innerHTML = `
-          <div class="bg-rose-950/80 border border-rose-500 p-4 rounded-xl text-xs sm:text-sm text-rose-200 pop-anim">
-            <b>❌ DANO SOFRIDO!</b>
-            <p class="mt-1">${opt.feedback}</p>
-          </div>
-        `;
-      }
-    }
-
-    /* -------------------------------------------------- */
-    /* GAME 2: CAÇA-ERROS DE FICÇÃO (DETETIVE)           */
-    /* -------------------------------------------------- */
-    function initGame2() {
-      gameState = {
-        i: 0,
-        hits: 0,
-        cases: [
-          {
-            title: 'Caso #1: A Crônica do Futuro',
-            text: 'Existe muitas falhas na entrega de remédios no distrito espacial, o que prejudica a população.',
-            options: ['Erro de Concordância Verbal (C1)', 'Fuga ao Tema (C2)', 'Falta de Conectivo (C4)'],
-            correct: 0,
-            explain: 'Incorreto usar "Existe" no singular com o sujeito no plural "muitas falhas". O correto é: "Existem muitas falhas".'
-          },
-          {
-            title: 'Caso #2: O Artigo Científico Desconexo',
-            titleText: 'A cibernética traz vantagens. Entretanto, ela traz benefícios na medicina.',
-            options: ['Uso inadequado de Crase (C1)', 'Conectivo de Oposição Inadequado (C4)', 'Ausência de Agente (C5)'],
-            correct: 1,
-            explain: '"Entretanto" indica contradição, mas a frase seguinte soma outro benefício. O certo seria usar "Além disso".'
-          }
-        ]
-      };
-      renderGame2();
-    }
-
-    function renderGame2() {
-      const g = gameState;
-      const container = $('#gameContainer');
-
-      if (g.i >= g.cases.length) {
-        userState.gamesCompleted++;
-        addXP(200);
-        container.innerHTML = `
-          <div class="text-center py-6 pop-anim">
-            <span class="text-5xl mb-3 block">🔍</span>
-            <h3 class="text-2xl font-extrabold text-cyan-300 mb-2">Casos Solucionados!</h3>
-            <p class="text-sm text-slate-300 mb-4">Sua lupa investigativa salvou o reino dos erros gramaticais e coesivos.</p>
-            <button onclick="exitGame()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-lg">
-              Concluir Investigação
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      const c = g.cases[g.i];
-      container.innerHTML = `
-        <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
-          <div>
-            <span class="text-xs text-cyan-400 font-extrabold">${c.title}</span>
-            <h3 class="text-lg font-bold text-white">Detetive de Falhas Textuais</h3>
-          </div>
-          <button onclick="exitGame()" class="text-slate-400 hover:text-white text-xs bg-slate-700 px-3 py-1.5 rounded-lg">Sair ✖</button>
-        </div>
-        <div class="bg-amber-950/30 border-l-4 border-amber-400 p-4 rounded-xl mb-4 italic text-sm text-amber-200">
-          "${esc(c.text)}"
-        </div>
-        <p class="text-xs text-slate-300 mb-3">Qual é a falha principal encontrada neste trecho?</p>
-        <div class="space-y-2 mb-4">
-          ${c.options.map((opt, idx) => `
-            <button onclick="pickGame2(${idx})" class="w-full text-left bg-slate-900 hover:bg-slate-700 border border-slate-700 p-3 rounded-xl text-xs sm:text-sm text-slate-200 transition">
-              ${esc(opt)}
-            </button>
-          `).join('')}
-        </div>
-        <div id="game2Fb"></div>
-      `;
-    }
-
-    function pickGame2(idx) {
-      const c = gameState.cases[gameState.i];
-      const fb = $('#game2Fb');
-
-      if (idx === c.correct) {
-        gameState.hits++;
-        fb.innerHTML = `
-          <div class="bg-emerald-950/80 border border-emerald-500 p-4 rounded-xl text-xs sm:text-sm text-emerald-200 pop-anim">
-            <b>✅ DIAGNÓSTICO EXATO!</b>
-            <p class="mt-1">${c.explain}</p>
-            <button onclick="gameState.i++; renderGame2();" class="mt-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg text-xs">
-              Próximo Caso ➜
-            </button>
-          </div>
-        `;
-      } else {
-        fb.innerHTML = `
-          <div class="bg-rose-950/80 border border-rose-500 p-4 rounded-xl text-xs sm:text-sm text-rose-200 pop-anim">
-            <b>❌ PISTA INCORRETA!</b> Tente analisar com mais atenção as regras da norma culta e coesão.
-          </div>
-        `;
-      }
-    }
-
-    /* -------------------------------------------------- */
-    /* GAME 3: DUELO DE REPERTÓRIOS                      */
-    /* -------------------------------------------------- */
-    function initGame3() {
-      gameState = {
-        i: 0,
-        cards: [
-          {
-            theme: 'Tema: Desafios da Educação Inclusiva',
-            reps: [
-              { text: 'Constituição Federal de 1988 (Art. 205: Educação é direito de todos)', valid: true },
-              { text: 'Teoria da Gravitação Universal de Isaac Newton', valid: false }
-            ],
-            explain: 'A CF/88 garante o direito universal à educação, sendo repertório altamente legítimo e produtivo para inclusão.'
-          },
-          {
-            theme: 'Tema: Impactos dos Algoritmos na Cidadania',
-            reps: [
-              { text: 'Conceito de "Modernidade Líquida" de Zygmunt Bauman', valid: true },
-              { text: 'Receita de bolo tradicional brasileira', valid: false }
-            ],
-            explain: 'Bauman analisa a fragilidade e fluidez das relações na era digital, ligando-se aos impactos dos algoritmos.'
-          }
-        ]
-      };
-      renderGame3();
-    }
-
-    function renderGame3() {
-      const g = gameState;
-      const container = $('#gameContainer');
-
-      if (g.i >= g.cards.length) {
-        userState.gamesCompleted++;
-        addXP(200);
-        container.innerHTML = `
-          <div class="text-center py-6 pop-anim">
-            <span class="text-5xl mb-3 block">⚔️</span>
-            <h3 class="text-2xl font-extrabold text-indigo-300 mb-2">Vitória na Arena!</h3>
-            <p class="text-sm text-slate-300 mb-4">Seus repertórios socioculturais esmagaram os argumentos fracos.</p>
-            <button onclick="exitGame()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-lg">
-              Voltar ao Hub
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      const c = g.cards[g.i];
-      container.innerHTML = `
-        <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
-          <div>
-            <span class="text-xs text-indigo-400 font-extrabold">Batalha Tática de Ideias</span>
-            <h3 class="text-lg font-bold text-white">${c.theme}</h3>
-          </div>
-          <button onclick="exitGame()" class="text-slate-400 hover:text-white text-xs bg-slate-700 px-3 py-1.5 rounded-lg">Sair ✖</button>
-        </div>
-        <p class="text-xs text-slate-300 mb-4">Escolha a carta de repertório mais pertinente e produtiva para este tema:</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-          ${c.reps.map((r, idx) => `
-            <button onclick="pickGame3(${idx})" class="bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-indigo-400 p-4 rounded-xl text-xs sm:text-sm text-left text-slate-200 transition">
-              📜 ${esc(r.text)}
-            </button>
-          `).join('')}
-        </div>
-        <div id="game3Fb"></div>
-      `;
-    }
-
-    function pickGame3(idx) {
-      const c = gameState.cards[gameState.i];
-      const selected = c.reps[idx];
-      const fb = $('#game3Fb');
-
-      if (selected.valid) {
-        fb.innerHTML = `
-          <div class="bg-emerald-950/80 border border-emerald-500 p-4 rounded-xl text-xs sm:text-sm text-emerald-200 pop-anim">
-            <b>⚡ ATAQUE SOCIOCULTURAL BEM-SUCEDIDO!</b>
-            <p class="mt-1">${c.explain}</p>
-            <button onclick="gameState.i++; renderGame3();" class="mt-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg text-xs">
-              Avançar Duelo ➜
-            </button>
-          </div>
-        `;
-      } else {
-        fb.innerHTML = `
-          <div class="bg-rose-950/80 border border-rose-500 p-4 rounded-xl text-xs sm:text-sm text-rose-200 pop-anim">
-            <b>🛡️ REPERTÓRIO ILEGÍTIMO OU IMPERTINENTE!</b> Esse elemento não possui ligação lógica com a temática.
-          </div>
-        `;
-      }
-    }
-
-    /* -------------------------------------------------- */
-    /* GAME 4: LABORATÓRIO DE CONECTIVOS                 */
-    /* -------------------------------------------------- */
-    function initGame4() {
-      gameState = {
-        i: 0,
-        puzzles: [
-          {
-            phrase1: 'O investimento em tecnologia é essencial.',
-            phrase2: 'ele deve vir acompanhado de capacitação humana.',
-            options: ['Além disso', 'Contudo', 'Portanto'],
-            correct: 1,
-            type: 'Oposição/Ressalva'
-          },
-          {
-            phrase1: 'A educação transforma realidades,',
-            phrase2: 'é indispensável priorizar verbas para a escola pública.',
-            options: ['portanto', 'embora', 'todavia'],
-            correct: 0,
-            type: 'Conclusão'
-          }
-        ]
-      };
-      renderGame4();
-    }
-
-    function renderGame4() {
-      const g = gameState;
-      const container = $('#gameContainer');
-
-      if (g.i >= g.puzzles.length) {
-        userState.gamesCompleted++;
-        addXP(200);
-        container.innerHTML = `
-          <div class="text-center py-6 pop-anim">
-            <span class="text-5xl mb-3 block">⚡</span>
-            <h3 class="text-2xl font-extrabold text-emerald-300 mb-2">Energia Coesiva Restabelecida!</h3>
-            <p class="text-sm text-slate-300 mb-4">Você dominou a arte de ligar frases sem gerar curto-circuito na C4.</p>
-            <button onclick="exitGame()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-lg">
-              Sair do Laboratório
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      const p = g.puzzles[g.i];
-      container.innerHTML = `
-        <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
-          <div>
-            <span class="text-xs text-emerald-400 font-extrabold">Puzzle de Conexão (C4)</span>
-            <h3 class="text-lg font-bold text-white">Religue os Cabos Lógicos</h3>
-          </div>
-          <button onclick="exitGame()" class="text-slate-400 hover:text-white text-xs bg-slate-700 px-3 py-1.5 rounded-lg">Sair ✖</button>
-        </div>
-        <p class="text-xs text-slate-300 mb-3">Escolha o conectivo com valor semântico de <b>${p.type}</b>:</p>
-        <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-sm text-center mb-4">
-          "${esc(p.phrase1)} <span class="text-amber-400 underline font-bold">[ CONECTIVO ]</span> ${esc(p.phrase2)}"
-        </div>
-        <div class="flex flex-wrap gap-2 justify-center mb-4">
-          ${p.options.map((opt, idx) => `
-            <button onclick="pickGame4(${idx})" class="bg-emerald-950/60 hover:bg-emerald-800 border border-emerald-500/50 px-5 py-2.5 rounded-xl font-bold text-emerald-300 transition text-sm">
-              ⚡ ${esc(opt)}
-            </button>
-          `).join('')}
-        </div>
-        <div id="game4Fb"></div>
-      `;
-    }
-
-    function pickGame4(idx) {
-      const p = gameState.puzzles[gameState.i];
-      const fb = $('#game4Fb');
-
-      if (idx === p.correct) {
-        fb.innerHTML = `
-          <div class="bg-emerald-950/80 border border-emerald-500 p-4 rounded-xl text-xs sm:text-sm text-emerald-200 pop-anim">
-            <b>✅ ENERGIA CONECTADA COM SUCESSO!</b>
-            <button onclick="gameState.i++; renderGame4();" class="mt-3 block bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg text-xs">
-              Próximo Circuito ➜
-            </button>
-          </div>
-        `;
-      } else {
-        fb.innerHTML = `
-          <div class="bg-rose-950/80 border border-rose-500 p-4 rounded-xl text-xs sm:text-sm text-rose-200 pop-anim">
-            <b>❌ CURTO-CIRCUITO SOBERANO!</b> Esse conectivo muda o sentido e prejudica a coesão do texto.
-          </div>
-        `;
-      }
-    }
-
-    /* -------------------------------------------------- */
-    /* GAME 5: A FÓRMULA DA PROPOSTA (ALQUIMIA C5)       */
-    /* -------------------------------------------------- */
-    function initGame5() {
-      gameState = {
-        slots: { agente: null, acao: null, meio: null, efeito: null, detalhe: null },
-        options: {
-          agente: 'O Ministério da Educação',
-          acao: 'deve implantar oficinas de alfabetização digital',
-          meio: 'por meio de convênios com universidades públicas',
-          efeito: 'a fim de capacitar idosos para a cidadania virtual,',
-          detalhe: 'medida essa que complementa as diretrizes do Estatuto do Idoso.'
-        }
-      };
-      renderGame5();
-    }
-
-    function renderGame5() {
-      const container = $('#gameContainer');
-      const s = gameState.slots;
-      const allDone = s.agente && s.acao && s.meio && s.efeito && s.detalhe;
-
-      if (allDone) {
-        userState.gamesCompleted++;
-        addXP(300);
-        container.innerHTML = `
-          <div class="text-center py-6 pop-anim">
-            <span class="text-5xl mb-3 block">🔮</span>
-            <h3 class="text-2xl font-extrabold text-pink-300 mb-2">Poção Nota 200 na C5 Criada!</h3>
-            <p class="text-sm text-slate-300 mb-4">Sua proposta de intervenção possui todos os 5 elementos essenciais do INEP!</p>
-            <div class="bg-slate-900 p-4 rounded-xl border border-pink-500/40 text-xs text-left mb-6 leading-relaxed">
-              <span class="text-amber-300 font-bold">${s.agente}</span> ${s.acao} <span class="text-cyan-300 font-bold">${s.meio}</span> ${s.efeito} <span class="text-pink-300 font-bold">${s.detalhe}</span>
-            </div>
-            <button onclick="exitGame()" class="bg-pink-600 hover:bg-pink-500 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-lg">
-              Guardar Poção Alquímica
-            </button>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = `
-        <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-4">
-          <div>
-            <span class="text-xs text-pink-400 font-extrabold">Laboratório Alquímico</span>
-            <h3 class="text-lg font-bold text-white">Mistura dos 5 Elementos da C5</h3>
-          </div>
-          <button onclick="exitGame()" class="text-slate-400 hover:text-white text-xs bg-slate-700 px-3 py-1.5 rounded-lg">Sair ✖</button>
-        </div>
-        <p class="text-xs text-slate-300 mb-4">Clique nos ingredientes na ordem lógica para compor a solução perfeita:</p>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 mb-6">
-          <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-700 text-center">
-            <span class="text-[10px] text-slate-400 font-bold uppercase block">1. Agente</span>
-            <span class="text-xs font-extrabold text-amber-400">${s.agente ? '✅ Adicionado' : '❓ Vazio'}</span>
-          </div>
-          <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-700 text-center">
-            <span class="text-[10px] text-slate-400 font-bold uppercase block">2. Ação</span>
-            <span class="text-xs font-extrabold text-cyan-400">${s.acao ? '✅ Adicionado' : '❓ Vazio'}</span>
-          </div>
-          <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-700 text-center">
-            <span class="text-[10px] text-slate-400 font-bold uppercase block">3. Meio/Modo</span>
-            <span class="text-xs font-extrabold text-indigo-400">${s.meio ? '✅ Adicionado' : '❓ Vazio'}</span>
-          </div>
-          <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-700 text-center">
-            <span class="text-[10px] text-slate-400 font-bold uppercase block">4. Efeito</span>
-            <span class="text-xs font-extrabold text-emerald-400">${s.efeito ? '✅ Adicionado' : '❓ Vazio'}</span>
-          </div>
-          <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-700 text-center">
-            <span class="text-[10px] text-slate-400 font-bold uppercase block">5. Detalhe</span>
-            <span class="text-xs font-extrabold text-pink-400">${s.detalhe ? '✅ Adicionado' : '❓ Vazio'}</span>
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          ${!s.agente ? `<button onclick="gameState.slots.agente=gameState.options.agente; renderGame5();" class="w-full bg-slate-900 hover:bg-slate-700 border border-amber-500/40 p-3 rounded-xl text-xs sm:text-sm text-left text-amber-200">🧪 Adicionar Agente: "${gameState.options.agente}"</button>` : ''}
-          ${s.agente && !s.acao ? `<button onclick="gameState.slots.acao=gameState.options.acao; renderGame5();" class="w-full bg-slate-900 hover:bg-slate-700 border border-cyan-500/40 p-3 rounded-xl text-xs sm:text-sm text-left text-cyan-200">🧪 Adicionar Ação: "${gameState.options.acao}"</button>` : ''}
-          ${s.acao && !s.meio ? `<button onclick="gameState.slots.meio=gameState.options.meio; renderGame5();" class="w-full bg-slate-900 hover:bg-slate-700 border border-indigo-500/40 p-3 rounded-xl text-xs sm:text-sm text-left text-indigo-200">🧪 Adicionar Meio: "${gameState.options.meio}"</button>` : ''}
-          ${s.meio && !s.efeito ? `<button onclick="gameState.slots.efeito=gameState.options.efeito; renderGame5();" class="w-full bg-slate-900 hover:bg-slate-700 border border-emerald-500/40 p-3 rounded-xl text-xs sm:text-sm text-left text-emerald-200">🧪 Adicionar Efeito: "${gameState.options.efeito}"</button>` : ''}
-          ${s.efeito && !s.detalhe ? `<button onclick="gameState.slots.detalhe=gameState.options.detalhe; renderGame5();" class="w-full bg-slate-900 hover:bg-slate-700 border border-pink-500/40 p-3 rounded-xl text-xs sm:text-sm text-left text-pink-200">🧪 Adicionar Detalhamento: "${gameState.options.detalhe}"</button>` : ''}
-        </div>
-      `;
-    }
-
-    /* -------------------------------------------------- */
-    /* PROFILE AND RANKING                                */
-    /* -------------------------------------------------- */
-    function renderProfile() {
-      const badgesContainer = $('#badgesGrid');
-      const allBadges = [
-        { id: 'novato', icon: '🌱', title: 'Primeiro Passo', desc: 'Iniciou a jornada' },
-        { id: 'mestre_rep', icon: '📜', title: 'Mestre do Repertório', desc: 'Completou o Duelo de Repertórios' },
-        { id: 'alquimista', icon: '🧪', title: 'Alquimista C5', desc: 'Criou a poção da intervenção' }
-      ];
-
-      badgesContainer.innerHTML = allBadges.map(b => `
-        <div class="bg-slate-900 border border-slate-700/80 p-3 rounded-xl text-center">
-          <span class="text-3xl block mb-1">${b.icon}</span>
-          <h4 class="font-bold text-xs text-white">${b.title}</h4>
-          <p class="text-[10px] text-slate-400 mt-0.5">${b.desc}</p>
-        </div>
-      `).join('');
-
-      // Render Ranking
-      const rankingList = $('#rankingList');
-      rankingList.innerHTML = `
-        <table class="w-full text-left text-xs sm:text-sm">
-          <thead class="bg-slate-900 text-slate-400 border-b border-slate-700">
-            <tr>
-              <th class="p-2.5">#</th>
-              <th class="p-2.5">Escriba</th>
-              <th class="p-2.5">Nível</th>
-              <th class="p-2.5 text-right">XP Total</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-700/50">
-            <tr class="bg-slate-800/50">
-              <td class="p-2.5 text-amber-400 font-bold">🥇 1º</td>
-              <td class="p-2.5 font-bold text-white">${esc(userState.name)} (Você)</td>
-              <td class="p-2.5 text-slate-300">${userState.level}</td>
-              <td class="p-2.5 text-right font-extrabold text-cyan-400">${userState.xp} XP</td>
-            </tr>
-            <tr>
-              <td class="p-2.5 text-slate-400">🥈 2º</td>
-              <td class="p-2.5 text-slate-300">Machado de Assis Bot</td>
-              <td class="p-2.5 text-slate-300">5</td>
-              <td class="p-2.5 text-right font-bold text-slate-400">1200 XP</td>
-            </tr>
-          </tbody>
-        </table>
-      `;
-    }
-
-    function resetUserData() {
-      if (confirm('Deseja realmente resetar todo o seu progresso no jogo?')) {
-        localStorage.removeItem(STORAGE_KEY);
-        userState = { name: 'Escriba Destemido', xp: 0, level: 1, lives: 3, gamesCompleted: 0, badges: ['novato'], ranking: [] };
-        saveState();
-        switchTab('hub');
-        showToast('Progresso resetado com sucesso.');
-      }
-    }
-
-    /* Initialize App */
-    window.onload = function() {
-      loadState();
-    };
-  </script>
+<body>
+<div class="container">
+<header>
+<h1>🎯 Desafio da Redação</h1>
+<p>Treine para o ENEM com situações que fazem parte do seu dia a dia.</p>
+</header>
+<div id="app"></div>
+</div>
+
+<script>
+const app=document.getElementById('app');
+
+const TEMA="Os impactos do uso excessivo do celular na vida dos adolescentes";
+const DADOS=[
+{titulo:"🧠 Redação ENEM sem complicação",texto:"Na redação do ENEM, você precisa apresentar uma opinião sobre o tema, explicar essa opinião com bons argumentos e apresentar uma proposta de solução."},
+{titulo:"🧱 Estrutura básica",texto:"Uma forma simples de organizar a redação é usar quatro parágrafos: introdução, desenvolvimento 1, desenvolvimento 2 e conclusão."},
+{titulo:"🎯 Tese",texto:"A tese é a ideia principal que você vai defender. Ela precisa responder: qual é a minha opinião sobre o problema apresentado?"},
+{titulo:"🔎 Argumento",texto:"O argumento explica por que sua opinião faz sentido. Você pode usar fatos, pesquisas, leis, exemplos sociais, livros, filmes ou acontecimentos conhecidos."},
+{titulo:"🔗 Conectivos",texto:"Conectivos ajudam o leitor a acompanhar seu raciocínio. Exemplos: além disso, porém, porque, por isso, portanto e dessa forma."},
+{titulo:"🛠️ Proposta de intervenção",texto:"Na conclusão, apresente uma solução. Pense em: quem vai agir, o que será feito, como será feito e qual resultado se espera."}
+];
+
+const GAMES=[
+{tipo:"quiz",titulo:"🎮 Jogo 1 — Qual ideia combina?",q:"Qual frase apresenta uma tese adequada para o tema?",ops:[
+["O celular existe há muitos anos e possui vários modelos.",false],
+["O uso excessivo do celular pode prejudicar a rotina dos adolescentes, especialmente o sono e a concentração nos estudos.",true],
+["Os celulares são vendidos em lojas e pela internet.",false],
+["Muitos adolescentes gostam de assistir a vídeos no celular.",false]
+],exp:"A alternativa apresenta uma opinião clara e aponta dois problemas que podem ser desenvolvidos: sono e concentração."},
+
+{tipo:"quiz",titulo:"🕵️ Jogo 2 — Caça ao problema",q:"Qual trecho apresenta um problema de linguagem para uma redação formal?",ops:[
+["Além disso, o uso excessivo das redes sociais pode diminuir o tempo dedicado aos estudos.",false],
+["Porém, muitos estudantes ainda não percebem os efeitos desse hábito.",false],
+["Tipo, o celular acaba com a vida da pessoa e é muito ruim, né?",true],
+["Por isso, é importante buscar equilíbrio no uso da tecnologia.",false]
+],exp:"Expressões como “tipo” e “né”, além do tom exagerado, deixam o trecho inadequado para a linguagem formal da redação."},
+
+{tipo:"quiz",titulo:"🔗 Jogo 3 — Escolha o conectivo",q:"Complete: “O celular facilita a comunicação. ________, quando usado em excesso, pode atrapalhar o sono.”",ops:[
+["Além disso",false],["Porém",true],["Portanto",false],["Por isso",false]
+],exp:"“Porém” indica oposição: o celular tem uma vantagem, mas também pode trazer um problema quando usado em excesso."},
+
+{tipo:"quiz",titulo:"📚 Jogo 4 — Repertório ou opinião?",q:"Qual opção funciona melhor como repertório para desenvolver uma redação?",ops:[
+["Minha mãe acha que celular faz mal.",false],
+["Todo mundo sabe que adolescente fica muito no celular.",false],
+["Uma pesquisa ou dado de fonte confiável sobre o tempo de uso de telas entre adolescentes.",true],
+["Eu vi um comentário em uma rede social.",false]
+],exp:"Um repertório forte vem de uma fonte identificável e confiável e precisa ser relacionado ao argumento."},
+
+{tipo:"quiz",titulo:"💡 Jogo 5 — Causa e consequência",q:"Qual alternativa apresenta uma relação de causa e consequência?",ops:[
+["Os adolescentes usam celular e também estudam.",false],
+["O uso do celular é comum entre os jovens.",false],
+["Quando o celular é usado até tarde, o adolescente pode dormir menos e ter dificuldade para se concentrar no dia seguinte.",true],
+["Celular, escola, família e internet fazem parte da rotina.",false]
+],exp:"A alternativa mostra uma causa (uso até tarde) e consequências (menos sono e dificuldade de concentração)."},
+
+{tipo:"ordem",titulo:"🧩 Jogo 6 — Monte a redação",q:"Clique nos blocos na ordem correta para formar a estrutura básica da redação.",blocos:[
+"Introdução: apresentar o tema e a tese.",
+"Desenvolvimento 1: explicar o primeiro argumento.",
+"Desenvolvimento 2: apresentar outro argumento.",
+"Conclusão: propor uma solução."
+],exp:"A sequência mais comum é: introdução → desenvolvimento 1 → desenvolvimento 2 → conclusão."},
+
+{tipo:"verdadeiro",titulo:"✅ Jogo 7 — Verdadeiro ou falso",q:"“Na conclusão, basta escrever: ‘O governo precisa resolver esse problema’.”",resposta:false,exp:"Falso. A proposta precisa ser mais detalhada: quem fará, o que será feito, como e com qual finalidade."},
+
+{tipo:"verdadeiro",titulo:"⚡ Jogo 8 — Verdadeiro ou falso",q:"“Uma redação pode ter bons argumentos, mas, se fugir do tema, terá um grande problema na avaliação.”",resposta:true,exp:"Verdadeiro. Compreender e desenvolver corretamente o tema é fundamental."},
+
+{tipo:"quiz",titulo:"📱 Jogo 9 — Situação do dia a dia",q:"João chega da escola, fica várias horas no celular, dorme muito tarde e no dia seguinte não consegue prestar atenção na aula. Qual argumento pode ser usado?",ops:[
+["O celular possui várias marcas diferentes.",false],
+["O uso sem controle pode prejudicar o sono e a concentração dos estudantes.",true],
+["Todo adolescente deveria abandonar a tecnologia.",false],
+["A escola não tem nenhuma relação com o problema.",false]
+],exp:"O exemplo de João permite discutir o uso sem equilíbrio e seus efeitos na rotina escolar."},
+
+{tipo:"quiz",titulo:"🛠️ Jogo 10 — Complete a solução",q:"Qual proposta é mais completa?",ops:[
+["O governo precisa fazer alguma coisa.",false],
+["Os adolescentes precisam mudar.",false],
+["As escolas devem realizar oficinas sobre uso consciente da tecnologia, com orientações práticas sobre tempo de tela e sono, para ajudar os estudantes a equilibrar estudo e lazer.",true],
+["O celular deve ser proibido para todos.",false]
+],exp:"A proposta apresenta agente, ação, meio/detalhamento e finalidade, sem propor uma solução exagerada ou inviável."},
+
+{tipo:"quiz",titulo:"✍️ Jogo 11 — Melhor frase",q:"Qual frase é mais adequada para iniciar um desenvolvimento?",ops:[
+["Eu acho isso muito ruim.",false],
+["Nesse contexto, o excesso de tempo diante das telas pode afetar a organização da rotina escolar.",true],
+["Tipo, isso acontece demais.",false],
+["Todo mundo concorda comigo.",false]
+],exp:"A frase apresenta uma ideia que pode ser desenvolvida com explicações e argumentos e usa linguagem adequada."},
+
+{tipo:"quiz",titulo:"🏁 Jogo 12 — Escolha a conclusão",q:"Qual conclusão fecha melhor uma redação sobre o uso excessivo do celular?",ops:[
+["Enfim, foi isso que eu quis dizer.",false],
+["Portanto, o uso do celular deve ser equilibrado para que a tecnologia continue sendo útil sem prejudicar a saúde e os estudos dos adolescentes.",true],
+["Celular é muito importante e pronto.",false],
+["Não tenho mais nada para falar sobre o assunto.",false]
+],exp:"A conclusão retoma a ideia principal e apresenta uma direção de solução, mantendo linguagem formal."}
+];
+
+let state={fase:0,pontos:0,acertos:0,respondido:false,selecionados:[]};
+
+function home(){
+state={fase:0,pontos:0,acertos:0,respondido:false,selecionados:[]};
+app.innerHTML=`
+<div class="homegrid">
+<div class="card">
+<div class="badges"><span class="badge">ENEM</span><span class="badge">Português</span><span class="badge">Treino</span></div>
+<h2>📱 Tema da missão</h2>
+<h3>${TEMA}</h3>
+<p>Um tema simples e próximo da realidade dos estudantes. A ideia é aprender a construir argumentos usando situações que eles conhecem: celular, estudos, sono, redes sociais e rotina.</p>
+<button class="primary" onclick="aula()">📖 Aprender primeiro</button>
+<button class="secondary" onclick="comecar()">🚀 Começar os jogos</button>
+</div>
+<div class="card">
+<h2>🎲 Jogos diferentes</h2>
+<p>O treinamento mistura desafios para evitar que a atividade fique repetitiva:</p>
+<ul>
+<li>Escolha a melhor resposta</li>
+<li>Caça ao erro</li>
+<li>Complete com conectivos</li>
+<li>Monte a estrutura da redação</li>
+<li>Verdadeiro ou falso</li>
+<li>Situações do cotidiano</li>
+<li>Escolha a melhor proposta</li>
+</ul>
+<div class="example"><b>Objetivo:</b> aprender enquanto joga, errando e entendendo o motivo da resposta.</div>
+</div>
+</div>`;
+}
+
+function aula(){
+app.innerHTML=`<div class="card">
+<h2>📖 Aula rápida</h2>
+<p class="small">Antes de jogar, veja o essencial.</p>
+${DADOS.map((d,i)=>`<div class="example"><b>${d.titulo}</b><p>${d.texto}</p>${i===2?'<p><b>Exemplo:</b> “O uso exagerado do celular pode prejudicar a concentração dos estudantes.”</p>':''}</div>`).join('')}
+<button class="primary" onclick="comecar()">🎮 Agora quero jogar</button>
+<button class="secondary" onclick="home()">⬅ Voltar</button>
+</div>`;
+}
+
+function comecar(){
+state={fase:0,pontos:0,acertos:0,respondido:false,selecionados:[]};
+mostrar();
+}
+
+function topo(g){
+return `<div class="stats">
+<div class="stat"><strong>${state.pontos}</strong><span>pontos</span></div>
+<div class="stat"><strong>${state.acertos}</strong><span>acertos</span></div>
+<div class="stat"><strong>${state.fase+1}</strong><span>questão</span></div>
+<div class="stat"><strong>${GAMES.length}</strong><span>total</span></div>
+</div>
+<div class="progress"><span style="width:${state.fase/GAMES.length*100}%"></span></div>`;
+}
+
+function mostrar(){
+if(state.fase>=GAMES.length){resultado();return}
+state.respondido=false;state.selecionados=[];
+const g=GAMES[state.fase];
+let body='';
+if(g.tipo==="quiz") body=g.ops.map((o,i)=>`<button class="option" onclick="responder(${i})">${o[0]}</button>`).join('');
+if(g.tipo==="verdadeiro") body=`<div class="choice-row"><button class="option" onclick="responder(true)">✅ Verdadeiro</button><button class="option" onclick="responder(false)">❌ Falso</button></div>`;
+if(g.tipo==="ordem") body=`<p class="small">Clique na sequência correta. Cada bloco selecionado ficará marcado.</p><div id="seq" class="sequence">${g.blocos.map((b,i)=>`<button onclick="selecionar(${i})" id="b${i}">${b}</button>`).join('')}</div><button class="primary" onclick="verificarOrdem()">Confirmar sequência</button>`;
+app.innerHTML=`<div class="card">${topo(g)}<div class="badges"><span class="badge">${g.titulo}</span></div><h2>${g.q}</h2>${body}<div id="feedback"></div></div>`;
+}
+
+function responder(valor){
+if(state.respondido)return;
+const g=GAMES[state.fase];
+let certo;
+if(g.tipo==="quiz") certo=g.ops[valor][1];
+else certo=valor===g.resposta;
+finalizar(certo,g.exp);
+}
+
+function selecionar(i){
+if(state.respondido)return;
+if(state.selecionados.includes(i))return;
+state.selecionados.push(i);
+document.getElementById('b'+i).classList.add('selected');
+}
+
+function verificarOrdem(){
+if(state.respondido)return;
+const g=GAMES[state.fase];
+const certo=state.selecionados.join(',')==="0,1,2,3";
+finalizar(certo,g.exp);
+}
+
+function finalizar(certo,exp){
+state.respondido=true;
+if(certo){state.acertos++;state.pontos+=100}
+document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+const fb=document.getElementById('feedback');
+fb.className='feedback '+(certo?'good':'bad');
+fb.innerHTML=`<b>${certo?'✅ Muito bem! +100 pontos':'❌ Ainda não. Vamos aprender com o erro.'}</b><p>${exp}</p><button class="next" onclick="proxima()">${state.fase===GAMES.length-1?'🏁 Ver resultado':'➡ Próximo desafio'}</button>`;
+}
+
+function proxima(){state.fase++;mostrar()}
+
+function resultado(){
+const nota=Math.round(state.acertos/GAMES.length*1000);
+let msg=nota>=800?"🔥 Excelente! Você já está dominando a base.":nota>=600?"👏 Muito bom! Mais alguns treinos e você vai avançar bastante.":"💪 Bom começo! Revise a aula e tente novamente.";
+app.innerHTML=`<div class="card result"><h2>🏆 Treino concluído!</h2><div class="bigscore">${nota}</div><p><b>Nota de treino</b></p><p>Você acertou <b>${state.acertos} de ${GAMES.length}</b> desafios e fez <b>${state.pontos} pontos</b>.</p><h3>${msg}</h3><div class="example"><b>Importante:</b> essa nota é apenas uma forma divertida de acompanhar o treino. Ela não representa a nota oficial do ENEM.</div><button class="primary" onclick="comecar()">🔁 Jogar novamente</button><button class="secondary" onclick="aula()">📖 Rever a aula</button><button class="secondary" onclick="home()">🏠 Início</button></div>`;
+}
+home();
+</script>
 </body>
 </html>
